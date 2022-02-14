@@ -99,10 +99,10 @@ resource "aws_launch_template" "cluster_lt" {
     content {
       device_name = block_device_mappings.key
       ebs {
-        volume_size           = lookup(block_device_mappings.value.ebs, "volume_size", null) ## block_device_mappings.value
-        volume_type           = lookup(block_device_mappings.value.ebs, "volume_type", null)
-        encrypted             = lookup(block_device_mappings.value.ebs, "encrypted", null)        
-        delete_on_termination = lookup(block_device_mappings.value.ebs, "delete_on_termination", null)
+        volume_size           = lookup(block_device_mappings.value, "volume_size", null) ## block_device_mappings.value
+        volume_type           = lookup(block_device_mappings.value, "volume_type", null)
+        encrypted             = lookup(block_device_mappings.value, "encrypted", null)        
+        delete_on_termination = lookup(block_device_mappings.value, "delete_on_termination", null)
       }
     }
   }  
