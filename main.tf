@@ -31,6 +31,10 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 
+resource "aws_iam_service_linked_role" "autoscaling" {
+  aws_service_name = "autoscaling.amazonaws.com"
+}
+
 # -------------------------------------------------------------
 #    ASG: Auto Scaling Group
 # -------------------------------------------------------------
@@ -45,7 +49,7 @@ resource "aws_autoscaling_group" "cluster_asg" {
   health_check_type         = "EC2"
   health_check_grace_period = 120
   termination_policies      = ["DEFAULT"]
-  service_linked_role_arn   = aws_iam_role.ecs_service_role.arn
+  service_linked_role_arn   = aws_iam_service_linked_role.autoscaling.arn ## "arn:aws:iam::163845772614:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
 
   tag {
     key                 = "AmazonECSManaged"
