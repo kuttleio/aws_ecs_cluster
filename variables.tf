@@ -23,18 +23,23 @@ variable "instance_types" {
 variable "ebs_disks" {
   description = "A list of additional EBS disks"
   type        = map(string)
-  default     = {}
+  default     = {
+    volume_size           = 100
+    volume_type           = "gp2"
+    encrypted             = true
+    delete_on_termination = true
+  }
 }
 
-variable "ebs_delete_on_termination" {
-  default = true
-}
-variable "ebs_volume_type" {
-  default = "gp2"
-}
-variable "ebs_encrypted" {
-  default = true
-}
+# variable "ebs_delete_on_termination" {
+#   default = true
+# }
+# variable "ebs_volume_type" {
+#   default = "gp2"
+# }
+# variable "ebs_encrypted" {
+#   default = true
+# }
 
 variable "cluster_min_size" {
   default = 0
