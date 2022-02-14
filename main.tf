@@ -2,9 +2,9 @@
 #    ECS Cluster
 # -------------------------------------------------------------
 resource "aws_ecs_cluster" "cluster" {
-  name               = var.cluster_name
-  tags               = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
-  capacity_providers = [aws_ecs_capacity_provider.cluster_cp.name]
+  name                                = var.cluster_name
+  tags                                = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+  aws_ecs_cluster_capacity_providers  = [aws_ecs_capacity_provider.cluster_cp.name]
 
   setting {
     name  = "containerInsights"
