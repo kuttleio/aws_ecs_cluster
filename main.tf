@@ -2,9 +2,9 @@
 #    ECS Cluster
 # -------------------------------------------------------------
 resource "aws_ecs_cluster" "cluster" {
-  name                                = var.cluster_name
-  tags                                = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
-  aws_ecs_cluster_capacity_providers  = [aws_ecs_capacity_provider.cluster_cp.name]
+  name               = var.cluster_name
+  tags               = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+  capacity_providers = [aws_ecs_cluster_capacity_providers.cluster_cp.name]
 
   setting {
     name  = "containerInsights"
@@ -12,7 +12,7 @@ resource "aws_ecs_cluster" "cluster" {
   }
 
   default_capacity_provider_strategy {
-    capacity_provider = aws_ecs_capacity_provider.cluster_cp.name
+    capacity_provider = aws_ecs_cluster_capacity_providers.cluster_cp.name
   }
 
   lifecycle {
@@ -128,7 +128,7 @@ resource "aws_launch_template" "cluster_lt" {
 # -------------------------------------------------------------
 #    Capacity Providers
 # -------------------------------------------------------------
-resource "aws_ecs_capacity_provider" "cluster_cp" {
+resource "aws_ecs_cluster_capacity_providers" "cluster_cp" {
   name = var.cluster_name
   
   auto_scaling_group_provider {
