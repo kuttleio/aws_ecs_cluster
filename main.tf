@@ -59,7 +59,7 @@ resource "aws_autoscaling_group" "cluster_asg" {
 
   mixed_instances_policy {
     instances_distribution {
-      on_demand_base_capacity                  = 50
+      on_demand_base_capacity                  = 100
       on_demand_percentage_above_base_capacity = 50
       spot_allocation_strategy                 = "capacity-optimized"
     }
