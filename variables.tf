@@ -31,15 +31,15 @@ variable "ebs_disks" {
   }
 }
 
-# variable "ebs_delete_on_termination" {
-#   default = true
-# }
-# variable "ebs_volume_type" {
-#   default = "gp2"
-# }
-# variable "ebs_encrypted" {
-#   default = true
-# }
+variable "ebs_delete_on_termination" {
+  default = true
+}
+variable "ebs_volume_type" {
+  default = "gp2"
+}
+variable "ebs_encrypted" {
+  default = true
+}
 
 variable "cluster_min_size" {
   default = 0
