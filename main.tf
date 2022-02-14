@@ -130,7 +130,7 @@ resource "aws_launch_template" "cluster_lt" {
 # -------------------------------------------------------------
 #    Capacity Providers
 # -------------------------------------------------------------
-resource "aws_ecs_capacity_provider" "cluster_cp" {
+resource "aws_ecs_cluster_capacity_providers" "cluster_cp" {
   name = var.cluster_name
   
   auto_scaling_group_provider {
