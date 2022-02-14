@@ -99,13 +99,13 @@ resource "aws_launch_template" "cluster_lt" {
     content {
       device_name = block_device_mappings.key
       ebs {
-        volume_size           = lookup(block_device_mappings.value, "volume_size", null) ## block_device_mappings.value
-        volume_type           = lookup(block_device_mappings.value, "volume_type", null)
-        encrypted             = lookup(block_device_mappings.value, "encrypted", null)        
-        delete_on_termination = lookup(block_device_mappings.value, "delete_on_termination", null)
+        volume_size           = block_device_mappings.value
+        volume_type           = var.ebs_volume_type
+        encrypted             = var.ebs_encrypted
+        delete_on_termination = var.ebs_delete_on_termination
       }
     }
-  }  
+  }
 
   network_interfaces {
     subnet_id       = var.ecs_subnet[0]
