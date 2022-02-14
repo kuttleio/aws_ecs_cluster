@@ -22,15 +22,15 @@ resource "aws_iam_role" "ec2_instance_role" {
     tags               = var.standard_tags
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_instance_role" {
-    role       = aws_iam_role.ec2_instance_role.name
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-}
+# resource "aws_iam_role_policy_attachment" "ecs_instance_role" {
+#     role       = aws_iam_role.ec2_instance_role.name
+#     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+# }
 
-resource "aws_iam_role_policy_attachment" "ssm_core_role" {
-    role       = aws_iam_role.ec2_instance_role.name
-    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
+# resource "aws_iam_role_policy_attachment" "ssm_core_role" {
+#     role       = aws_iam_role.ec2_instance_role.name
+#     policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+# }
 
 resource "aws_iam_instance_profile" "ecs_node" {
     name = "${var.cluster_name}-ECS-EC2InstanceProfile"
@@ -57,7 +57,7 @@ resource "aws_iam_role" "ecs_service_role" {
 
 resource "aws_iam_role_policy_attachment" "service_role" {
     role       = aws_iam_role.ecs_service_role.name
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
+    policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonECSServiceRolePolicy"
 }
 
 data "aws_iam_policy_document" "ecs_task_role_policy" {
