@@ -1,6 +1,4 @@
-variable "account" {}
 variable "key_name" {}
-variable "aws_region" {}
 variable "ecs_subnet" {}
 variable "cluster_sg" {}
 variable "cluster_name" {}
