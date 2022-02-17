@@ -58,7 +58,7 @@ resource "aws_autoscaling_group" "cluster_asg" {
   }
 
   lifecycle {
-    ignore_changes      = [desired_count]
+    ignore_changes      = [desired_capacity]
   }
 
   mixed_instances_policy {
