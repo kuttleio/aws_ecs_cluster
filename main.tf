@@ -57,6 +57,10 @@ resource "aws_autoscaling_group" "cluster_asg" {
     propagate_at_launch = true
   }
 
+  lifecycle {
+    ignore_changes      = ["desired_capacity"]
+  }
+
   mixed_instances_policy {
     instances_distribution {
       on_demand_base_capacity                  = 0
