@@ -1,7 +1,7 @@
 # -------------------------------------------------------------
 #    ECS Cluster
 # -------------------------------------------------------------
-resource "aws_ecs_cluster" "cluster" {
+resource aws_ecs_cluster cluster {
   name               = var.cluster_name
   tags               = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   capacity_providers = [aws_ecs_capacity_provider.cluster_cp.name]
@@ -19,6 +19,14 @@ resource "aws_ecs_cluster" "cluster" {
     create_before_destroy = true
   }
 
+  instance_refresh {
+    strategy = "Rolling"
+    triggers = ["tag"]
+    preferences {
+      min_healthy_percentage = 100
+    }
+  }
+
   configuration {
     execute_command_configuration {
       logging = "OVERRIDE"
@@ -34,12 +42,13 @@ resource "aws_ecs_cluster" "cluster" {
 # -------------------------------------------------------------
 #    ASG: Auto Scaling Group
 # -------------------------------------------------------------
-resource "aws_autoscaling_group" "cluster_asg" {
+resource aws_autoscaling_group cluster_asg {
   name                      = "${var.cluster_name}-ASG"
   min_size                  = var.cluster_min_size
   desired_capacity          = var.cluster_desired_capacity
   max_size                  = var.cluster_max_size  
-  protect_from_scale_in     = true
+  protect_from_scale_in     = var.protect_from_scale_in
+  force_delete              = var.force_delete
   vpc_zone_identifier       = var.ecs_subnet.*
   default_cooldown          = 120
   health_check_type         = "EC2"
@@ -64,7 +73,7 @@ resource "aws_autoscaling_group" "cluster_asg" {
   mixed_instances_policy {
     instances_distribution {
       on_demand_base_capacity                  = 0
-      on_demand_percentage_above_base_capacity = 50
+      on_demand_percentage_above_base_capacity = 100
       spot_allocation_strategy                 = "capacity-optimized"
     }
     launch_template {
@@ -87,7 +96,7 @@ resource "aws_autoscaling_group" "cluster_asg" {
 # -------------------------------------------------------------
 #    Launch Template
 # -------------------------------------------------------------
-resource "aws_launch_template" "cluster_lt" {
+resource aws_launch_template cluster_lt {
   name                      = "${var.cluster_name}-LT"
   image_id                  = data.aws_ami.amazon_linux_ecs.id
   instance_type             = "t3.small"
@@ -117,16 +126,16 @@ resource "aws_launch_template" "cluster_lt" {
   }
 
   tag_specifications {
-    resource_type = "instance"
-    tags          = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+    resource_type   = "instance"
+    tags            = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   }
   tag_specifications {
-    resource_type = "volume"
-    tags          = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+    resource_type   = "volume"
+    tags            = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   }
   tag_specifications {
-    resource_type = "network-interface"
-    tags          = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+    resource_type   = "network-interface"
+    tags            = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   }
 }
 
@@ -134,7 +143,7 @@ resource "aws_launch_template" "cluster_lt" {
 # -------------------------------------------------------------
 #    Capacity Providers
 # -------------------------------------------------------------
-resource "aws_ecs_capacity_provider" "cluster_cp" {
+resource aws_ecs_capacity_provider cluster_cp {
   name = var.cluster_name
   
   auto_scaling_group_provider {
@@ -142,10 +151,10 @@ resource "aws_ecs_capacity_provider" "cluster_cp" {
     managed_termination_protection = "ENABLED"
 
     managed_scaling {
-      maximum_scaling_step_size    = 1000
+      maximum_scaling_step_size    = 100
       minimum_scaling_step_size    = 1
       status                       = "ENABLED"
-      target_capacity              = 100
+      target_capacity              = 10
     }
   }
 }
@@ -154,7 +163,7 @@ resource "aws_ecs_capacity_provider" "cluster_cp" {
 # -------------------------------------------------------------
 #    CloudWatch Group
 # -------------------------------------------------------------
-resource "aws_cloudwatch_log_group" "cluster_log_group" {
+resource aws_cloudwatch_log_group cluster_log_group {
     name = "/ecs/${var.cluster_name}"
     tags = var.standard_tags
 }
