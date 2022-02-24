@@ -1,7 +1,7 @@
 # -------------------------------------------------------------
 #    ECS Cluster
 # -------------------------------------------------------------
-resource "aws_ecs_cluster" "cluster" {
+resource aws_ecs_cluster cluster {
   name               = var.cluster_name
   tags               = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   capacity_providers = [aws_ecs_capacity_provider.cluster_cp.name]
@@ -34,7 +34,7 @@ resource "aws_ecs_cluster" "cluster" {
 # -------------------------------------------------------------
 #    ASG: Auto Scaling Group
 # -------------------------------------------------------------
-resource "aws_autoscaling_group" "cluster_asg" {
+resource aws_autoscaling_group cluster_asg {
   name                      = "${var.cluster_name}-ASG"
   min_size                  = var.cluster_min_size
   desired_capacity          = var.cluster_desired_capacity
@@ -87,7 +87,7 @@ resource "aws_autoscaling_group" "cluster_asg" {
 # -------------------------------------------------------------
 #    Launch Template
 # -------------------------------------------------------------
-resource "aws_launch_template" "cluster_lt" {
+resource aws_launch_template cluster_lt {
   name                      = "${var.cluster_name}-LT"
   image_id                  = data.aws_ami.amazon_linux_ecs.id
   instance_type             = "t3.small"
@@ -117,16 +117,16 @@ resource "aws_launch_template" "cluster_lt" {
   }
 
   tag_specifications {
-    resource_type = "instance"
-    tags          = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+    resource_type   = "instance"
+    tags            = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   }
   tag_specifications {
-    resource_type = "volume"
-    tags          = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+    resource_type   = "volume"
+    tags            = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   }
   tag_specifications {
-    resource_type = "network-interface"
-    tags          = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
+    resource_type   = "network-interface"
+    tags            = merge(var.standard_tags, tomap({ Name = var.cluster_name }))
   }
 }
 
@@ -134,7 +134,7 @@ resource "aws_launch_template" "cluster_lt" {
 # -------------------------------------------------------------
 #    Capacity Providers
 # -------------------------------------------------------------
-resource "aws_ecs_capacity_provider" "cluster_cp" {
+resource aws_ecs_capacity_provider cluster_cp {
   name = var.cluster_name
   
   auto_scaling_group_provider {
@@ -154,7 +154,7 @@ resource "aws_ecs_capacity_provider" "cluster_cp" {
 # -------------------------------------------------------------
 #    CloudWatch Group
 # -------------------------------------------------------------
-resource "aws_cloudwatch_log_group" "cluster_log_group" {
+resource aws_cloudwatch_log_group cluster_log_group {
     name = "/ecs/${var.cluster_name}"
     tags = var.standard_tags
 }

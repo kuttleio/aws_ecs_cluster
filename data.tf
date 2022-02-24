@@ -1,6 +1,6 @@
-data "aws_region" "current" {}
+data aws_region current {}
 
-data "aws_ami" "amazon_linux_ecs" {
+data aws_ami amazon_linux_ecs {
     most_recent = true
     owners = ["amazon"]
     filter {
