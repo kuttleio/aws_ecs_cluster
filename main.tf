@@ -19,6 +19,14 @@ resource aws_ecs_cluster cluster {
     create_before_destroy = true
   }
 
+  instance_refresh {
+    strategy = "Rolling"
+    triggers = ["tag"]
+    preferences {
+      min_healthy_percentage = 100
+    }
+  }
+
   configuration {
     execute_command_configuration {
       logging = "OVERRIDE"
