@@ -53,3 +53,7 @@ variable force_delete {
   description = "Allows deleting the Auto Scaling Group without waiting for all instances in the pool to terminate"
   default     = true
 }
+variable protect_from_scale_in {
+  description = "Protection from ASG to scale-in instances (turn them off)"
+  default     = false
+}

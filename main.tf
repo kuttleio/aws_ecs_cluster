@@ -47,7 +47,7 @@ resource aws_autoscaling_group cluster_asg {
   min_size                  = var.cluster_min_size
   desired_capacity          = var.cluster_desired_capacity
   max_size                  = var.cluster_max_size  
-  protect_from_scale_in     = true
+  protect_from_scale_in     = var.protect_from_scale_in
   force_delete              = var.force_delete
   vpc_zone_identifier       = var.ecs_subnet.*
   default_cooldown          = 120
