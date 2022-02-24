@@ -48,3 +48,8 @@ variable cluster_desired_capacity {
 variable cluster_max_size {
   default = 10
 }
+
+variable force_delete {
+  description = "Allows deleting the Auto Scaling Group without waiting for all instances in the pool to terminate"
+  default     = true
+}
