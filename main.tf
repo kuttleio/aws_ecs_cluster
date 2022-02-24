@@ -19,14 +19,6 @@ resource aws_ecs_cluster cluster {
     create_before_destroy = true
   }
 
-  instance_refresh {
-    strategy = "Rolling"
-    triggers = ["tag"]
-    preferences {
-      min_healthy_percentage = 100
-    }
-  }
-
   configuration {
     execute_command_configuration {
       logging = "OVERRIDE"
@@ -68,6 +60,14 @@ resource aws_autoscaling_group cluster_asg {
 
   lifecycle {
     ignore_changes      = [desired_capacity]
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    triggers = ["tag"]
+    preferences {
+      min_healthy_percentage = 100
+    }
   }
 
   mixed_instances_policy {
