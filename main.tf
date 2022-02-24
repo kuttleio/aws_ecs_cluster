@@ -62,14 +62,6 @@ resource aws_autoscaling_group cluster_asg {
     ignore_changes      = [desired_capacity]
   }
 
-  instance_refresh {
-    strategy = "Rolling"
-    triggers = ["tag"]
-    preferences {
-      min_healthy_percentage = 100
-    }
-  }
-
   mixed_instances_policy {
     instances_distribution {
       on_demand_base_capacity                  = 0
