@@ -55,5 +55,5 @@ variable force_delete {
 }
 variable protect_from_scale_in {
   description = "Protection from ASG to scale-in instances (turn them off)"
-  default     = false
+  default     = true
 }
