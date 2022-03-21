@@ -59,7 +59,8 @@ resource aws_autoscaling_group cluster_asg {
   }
 
   lifecycle {
-    ignore_changes = [desired_capacity]
+    ignore_changes        = [desired_capacity]
+    create_before_destroy = true
   }
 
   mixed_instances_policy {
