@@ -59,7 +59,8 @@ resource aws_autoscaling_group cluster_asg {
   }
 
   lifecycle {
-    ignore_changes      = [desired_capacity]
+    ignore_changes        = [desired_capacity]
+    create_before_destroy = true
   }
 
   mixed_instances_policy {
@@ -112,9 +113,15 @@ resource aws_launch_template cluster_lt {
     }
   }
 
-  network_interfaces {
-    subnet_id       = var.ecs_subnet[0]
-    security_groups = var.cluster_sg
+  vpc_security_group_ids = var.cluster_sg
+
+  # network_interfaces {
+  #   subnet_id       = var.ecs_subnet[0]
+  #   security_groups = var.cluster_sg
+  # }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   tag_specifications {
